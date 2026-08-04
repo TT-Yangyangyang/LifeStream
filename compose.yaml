@@ -1,3 +1,8 @@
+#- PostgreSQL 仍然没有 ports:，不会暴露到公网。
+#- API 只绑定服务器本机的 127.0.0.1:8000，外网无法直接访问。
+#- 后续加入 Caddy 后，只有 Caddy 会对外提供 80/443。
+#- API 使用 Docker 内部地址 postgres:5432 访问数据库。
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -13,6 +18,22 @@ services:
       timeout: 5s
       retries: 5
       start_period: 20s
+    networks:
+      - lifestream_internal
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: lifestream-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8000:8000"
     networks:
       - lifestream_internal
 

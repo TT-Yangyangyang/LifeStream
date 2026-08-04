@@ -7,6 +7,6 @@ app = FastAPI(
 )
 
 @app.get("/health")
-async def health_check() -> [str,str]:
+async def health_check():
     return {"status": "ok"}
 
