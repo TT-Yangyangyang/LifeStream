@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Text, func
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Text, func, text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -30,9 +30,15 @@ class Capture(Base):
         nullable=False,
     )
     visibility: Mapped[CaptureVisibility] = mapped_column(
-        Enum(CaptureVisibility, name="capture_visibility"),
+        Enum(
+            CaptureVisibility,
+            name="capture_visibility",
+            values_callable=lambda enum_type: [
+                item.value for item in enum_type
+            ],
+        ),
         default=CaptureVisibility.PRIVATE,
-        server_default=CaptureVisibility.PRIVATE.value,
+        server_default=text("'private'::capture_visibility"),
         nullable=False,
     )
     allow_ai_processing: Mapped[bool] = mapped_column(
