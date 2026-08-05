@@ -5,8 +5,8 @@ from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Text, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
-from apps.api.app.db.base import Base
-from apps.api.app.models.enums import CaptureVisibility
+from app.db.base import Base
+from app.models.enums import CaptureVisibility
 
 
 class Capture(Base):
