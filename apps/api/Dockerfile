@@ -11,8 +11,11 @@ WORKDIR /app
 # 3.1 先复制依赖清单，利用 Docker 构建缓存加快后续构建。
 COPY requirements.txt ./
 
-# 3.2 安装运行 FastAPI、SQLAlchemy 和 Alembic 所需依赖。
-RUN pip install --no-cache-dir -r requirements.txt
+# 3.2 使用国内 PyPI 镜像安装 API 和数据库迁移依赖。
+RUN pip install \
+    --no-cache-dir \
+    --index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+    -r requirements.txt
 
 # 4.1 复制 API 源码和数据库迁移配置。
 COPY alembic.ini ./
