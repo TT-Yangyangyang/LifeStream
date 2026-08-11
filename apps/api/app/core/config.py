@@ -14,6 +14,11 @@ class Settings(BaseSettings):
         extra="ignore",              #里有多余的配置项，不报错，忽略它们。
     )
 
+    cors_origins: str = (
+        "http://localhost:3000,"
+        "http://127.0.0.1:3000"
+    )
+
 
 @lru_cache
 def get_settings() -> Settings:
